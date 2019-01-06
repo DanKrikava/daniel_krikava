@@ -6,15 +6,31 @@ puts hlavni_menu
 print "Vase volba:  "
 cislo_menu = gets.to_i
 seznam_prihlasenych = []
+require "set"
+jednotliva_jmena = Set.new
 continue = true
 
 while continue
+  serazeny_seznam = []
   if cislo_menu == 1
     print "Jmeno:      "
     jmeno = gets.strip
-    seznam_prihlasenych << jmeno
+    v_mnozine = jednotliva_jmena.include? jmeno
+    v_seznamu = seznam_prihlasenych.include? jmeno
+    n = seznam_prihlasenych.count(jmeno)+ 1
+    if v_mnozine == true && v_seznamu == true
+
+      poradi_jmena = " " + n.to_s
+     seznam_prihlasenych << jmeno + poradi_jmena
+    else
+      seznam_prihlasenych << jmeno && jednotliva_jmena << jmeno
+    end
+    serazeny_seznam = seznam_prihlasenych.sort
+
     puts "Hrac #{jmeno} zaregistrovan"
     p seznam_prihlasenych
+    p jednotliva_jmena
+    p serazeny_seznam
     puts hlavni_menu
     print "Vase volba:  "
     cislo_menu = gets.to_i
@@ -23,10 +39,9 @@ while continue
       puts "PRIHLASENI HRACI:
 Nejsou registrovani zadni hraci"
     else
-      poradi = 1
-      seznam_prihlasenych.each do |item|
-        puts "#{poradi}. #{item}"
-        poradi = poradi + 1
+      seznam_prihlasenych.each_with_index do |name, i|
+      i = i + 1
+      puts "#{i}. #{name}"
       end
     end
 
@@ -48,8 +63,20 @@ Nejsou registrovani zadni hraci"
     cislo_menu = gets.to_i
   elsif cislo_menu == 3
     puts "Opravdu chcete ukoncit prihlasovani? (ANO/NE)"
-
-    continue = false
+ukonceni = gets.strip
+  if ukonceni == "NE"
+    puts hlavni_menu
+    print "Vase volba:  "
+    cislo_menu = gets.to_i
+  else
+    puts "Rozpis"
+    puts "#{seznam_prihlasenych[0]} - #{seznam_prihlasenych[2]}"
+    puts "#{seznam_prihlasenych[1]} - #{seznam_prihlasenych[3]}"
+    puts "#{seznam_prihlasenych[1]} - #{seznam_prihlasenych[2]}"
+    puts "#{seznam_prihlasenych[0]} - #{seznam_prihlasenych[3]}"
   end
-end
+  end
+  end
+continue = false
+    
 
